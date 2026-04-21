@@ -1,135 +1,53 @@
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | BridgeCulvetTest</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-	<script src="enable-threading.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlayCanvas GSplat Viewer</title>
+    <script type="module" crossorigin src="./assets/index-BlRjHDW1.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BO9jGDBp.css">
   </head>
   <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-logo-title-footer"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">BridgeCulvetTest</div>
-      </div>
+    <canvas id="app"></canvas>
+    <div id="controls">
+      <label for="measure-mode-toggle">
+        <input id="measure-mode-toggle" type="checkbox" />
+        Measure
+      </label>
+      <label for="scene-scale-input" id="scene-scale-control">
+        Scale
+        <input id="scene-scale-input" type="number" value="1" min="0.01" step="0.1" />
+      </label>
+      
+      <label for="cut-plane-toggle" id="cut-plane-toggle-control">
+        <input id="cut-plane-toggle" type="checkbox" />
+        Cut Plane
+      </label>
+      <button id="measure-undo" type="button" hidden>Del Last</button>
+      <button id="fullscreen-toggle" type="button" aria-label="Toggle fullscreen" title="Toggle fullscreen">⤢</button>
     </div>
-    <script>
-      var canvas = document.querySelector("#unity-canvas");
-
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        var warningBanner = document.querySelector("#unity-warning");
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
-
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/output.loader.js";
-      var config = {
-        arguments: [],
-        dataUrl: buildUrl + "/output.data.unityweb",
-        frameworkUrl: buildUrl + "/output.framework.js.unityweb",
-        workerUrl: buildUrl + "/output.worker.js.unityweb",
-        codeUrl: buildUrl + "/output.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "UnityGaussianSplatting",
-        productVersion: "0.1",
-        showBanner: unityShowBanner,
-        // errorHandler: function(err, url, line) {
-        //    alert("error " + err + " occurred at line " + line);
-        //    // Return 'true' if you handled this error and don't want Unity
-        //    // to process it further, 'false' otherwise.
-        //    return true;
-        // },
-      };
-
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      // If you would like all file writes inside Unity Application.persistentDataPath
-      // directory to automatically persist so that the contents are remembered when
-      // the user revisits the site the next time, uncomment the following line:
-      // config.autoSyncPersistentDataPath = true;
-      // This autosyncing is currently not the default behavior to avoid regressing
-      // existing user projects that might rely on the earlier manual
-      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
-      // expected to change.
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        document.querySelector("#unity-container").className = "unity-mobile";
-        canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
-      }
-
-      document.querySelector("#unity-loading-bar").style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                document.querySelector("#unity-loading-bar").style.display = "none";
-                document.querySelector("#unity-fullscreen-button").onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
-
-    </script>
+    <div id="help-panel" hidden>
+      <button id="help-close" type="button" aria-label="Close help">x</button>
+      <h2>Viewer Help</h2>
+      <p><strong>Camera:</strong> Left drag rotate, right drag pan, mouse wheel zoom, WASD move. On touch: one-finger drag rotate, two-finger drag pan, and pinch zoom.</p>
+      <p><strong>Focus:</strong> Double-click or double-tap a scene point to focus camera there.</p>
+      <p><strong>Measure Mode:</strong> Enable <strong>Measure</strong>, single-click one scene point, then single-click another to create a measurement.</p>
+      <p><strong>Measure Tools:</strong> Use <strong>Del Last</strong> to remove the latest measurement. Turning off Measure keeps existing measurements.</p>
+      <p><strong>Cut Plane:</strong> Enable <strong>Cut Plane</strong>, then drag a colored axis line to move along that axis, or drag the axis tip to rotate around that axis.</p>
+      <p><strong>Tips:</strong> Click directly on the visible scene to place points. Dragging rotates the camera and does not create a measurement.</p>
+    </div>
+    <div id="hud">Loading splat.sog...</div>
+    <div id="bottom-controls">
+      <label for="glb-mode-toggle" id="glb-mode-control-bottom">
+        <input id="glb-mode-toggle" type="checkbox" />
+        GLB Mesh
+      </label>
+      <label for="camera-fov-input" id="camera-fov-control-bottom">
+        FOV
+        <input id="camera-fov-input" type="range" value="45" min="30" max="120" step="1" />
+        <span id="camera-fov-value">45</span>
+      </label>
+      <button id="help-toggle" type="button" aria-label="Help">?</button>
+    </div>
   </body>
 </html>
