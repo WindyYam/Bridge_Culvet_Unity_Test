@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PlayCanvas GSplat Viewer</title>
-    <script type="module" crossorigin src="./assets/index-BlRjHDW1.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BO9jGDBp.css">
+    <title>GroundCentral Scene Viewer</title>
+    <script type="module" crossorigin src="./assets/index-BJbQC-fz.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-D-N-vxRH.css">
   </head>
   <body>
     <canvas id="app"></canvas>
@@ -33,10 +33,25 @@
       <p><strong>Focus:</strong> Double-click or double-tap a scene point to focus camera there.</p>
       <p><strong>Measure Mode:</strong> Enable <strong>Measure</strong>, single-click one scene point, then single-click another to create a measurement.</p>
       <p><strong>Measure Tools:</strong> Use <strong>Del Last</strong> to remove the latest measurement. Turning off Measure keeps existing measurements.</p>
+      <p><strong>Move Slider:</strong> Drag the bottom-left vertical slider up/down for forward/backward movement. Releasing it returns speed to neutral.</p>
       <p><strong>Cut Plane:</strong> Enable <strong>Cut Plane</strong>, then drag a colored axis line to move along that axis, or drag the axis tip to rotate around that axis.</p>
       <p><strong>Tips:</strong> Click directly on the visible scene to place points. Dragging rotates the camera and does not create a measurement.</p>
     </div>
     <div id="hud">Loading splat.sog...</div>
+    <div id="forward-speed-control" aria-label="Forward speed control">
+      <span id="forward-speed-label">Move</span>
+      <div
+        id="forward-speed-track"
+        role="slider"
+        aria-label="Forward speed"
+        aria-valuemin="-100"
+        aria-valuemax="100"
+        aria-valuenow="0"
+      >
+        <div id="forward-speed-center"></div>
+        <div id="forward-speed-thumb"></div>
+      </div>
+    </div>
     <div id="bottom-controls">
       <label for="glb-mode-toggle" id="glb-mode-control-bottom">
         <input id="glb-mode-toggle" type="checkbox" />
@@ -47,6 +62,7 @@
         <input id="camera-fov-input" type="range" value="45" min="30" max="120" step="1" />
         <span id="camera-fov-value">45</span>
       </label>
+      <button id="download-scene" type="button">Download</button>
       <button id="help-toggle" type="button" aria-label="Help">?</button>
     </div>
   </body>
