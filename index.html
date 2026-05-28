@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GroundCentral Scene Viewer</title>
-    <script type="module" crossorigin src="./assets/index-CYN9T-_Q.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-B5zPBYSn.css">
+    <script type="module" crossorigin src="./assets/index-DmDeeZz4.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-0ed5EmJC.css">
   </head>
   <body>
     <canvas id="app"></canvas>
@@ -90,6 +90,16 @@
             <input id="contrast-input" type="range" value="1" min="0.5" max="2" step="0.01" />
             <span id="contrast-value">1.00x</span>
           </label>
+          <label for="saturation-input" id="saturation-control-bottom">
+            Saturation
+            <input id="saturation-input" type="range" value="1" min="0" max="2" step="0.01" />
+            <span id="saturation-value">1.00x</span>
+          </label>
+          <label for="sharpness-input" id="sharpness-control-bottom">
+            Sharpness
+            <input id="sharpness-input" type="range" value="0" min="0" max="10" step="0.01" />
+            <span id="sharpness-value">0.00x</span>
+          </label>
           <label for="white-balance-temperature-input" id="white-balance-temperature-control-bottom">
             White Balance
             <input id="white-balance-temperature-input" type="range" value="6500" min="2000" max="12000" step="50" />
@@ -130,6 +140,7 @@
     </div>
     <div id="bottom-controls">
       <button id="download-scene" type="button">Download</button>
+      <button id="ar-toggle" type="button" aria-label="Start augmented reality" aria-pressed="false" hidden>AR</button>
       <button id="options-toggle" type="button" aria-label="Options">Options</button>
       <button id="help-toggle" type="button" aria-label="Help">?</button>
     </div>
